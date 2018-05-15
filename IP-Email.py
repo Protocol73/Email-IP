@@ -1,4 +1,7 @@
 import os
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
+cls()    
 import time
 import smtplib
 import StoredData as SD
@@ -12,9 +15,6 @@ from email.MIMEMultipart import MIMEMultipart
 msg = MIMEMultipart()
 msg['Subject'] = "CHANGE ME"  # Email Subject
 #End local Storage
-
-def cls():
-    os.system('cls' if os.name=='nt' else 'clear')
 
 #This Block checks for valid looking IP address.
 def validate_ip(s): 
