@@ -11,10 +11,7 @@ from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 
-#Begin Local Storage
-msg = MIMEMultipart()
-msg['Subject'] = "CHANGE ME"  # Email Subject
-#End local Storage
+SD.msg
 
 #This Block checks for valid looking IP address.
 def validate_ip(s): 
@@ -42,17 +39,14 @@ else:
     print("Error: Was that an IP address?")
     time.sleep(5)
     exit()
-#Email Send 
-msg.attach(MIMEText(SD.body1, 'plain'))
-msg.attach(MIMEText(SD.body2, 'plain'))
-msg.attach(MIMEText(SD.body3, 'plain'))
-msg.attach(MIMEText(SD.body4, 'plain'))
-
+#Email Ready
+SD.msg.attach(MIMEText(SD.body1, 'plain'))
+#connect & login to email
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
 server.login(SD.fromaddr, SD.password)
-text = msg.as_string()
-server.sendmail(SD.fromaddr,SD.toaddr,text)
+text = SD.msg.as_string()
+server.sendmail(SD.fromaddr,SD.rcpt,text)
 server.quit()
 
 # Log Data to File
@@ -68,8 +62,8 @@ text_ip = [SD.IP]
 text_install = ["Installed & Emailed out:"]
 endtxt = [" ----- Device Divider ----- "]
 # End Data Storage
-# file name & how to open it.
-fh = open("Install Log.txt", "a") #Change File Name to Whatever.
+# file name & how to open it,will be created on first successful run
+fh = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
 # log data to file
 fh.writelines(newline)
 fh.writelines(newline)
