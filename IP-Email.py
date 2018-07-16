@@ -36,7 +36,7 @@ if validate_ip(SD.IP) == True:
     print ("Accepted IP: " + SD.IP)
     time.sleep(1.5)
 else:
-    print("Error: Was that an IP address?")
+    print("Error:" + SD.IP + " did NOT appear to be a valid IP address.")
     time.sleep(5)
     exit()
 #Email Ready
