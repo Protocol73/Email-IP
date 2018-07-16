@@ -63,20 +63,20 @@ text_install = ["Installed & Emailed out:"]
 endtxt = [" ----- Device Divider ----- "]
 # End Data Storage
 # file name & how to open it,will be created on first successful run
-fh = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
+log = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
 # log data to file
-fh.writelines(newline)
-fh.writelines(newline)
-fh.writelines(datetime.now().strftime("%a, %d %B %Y %I:%M:%S"))
-fh.writelines(newline)
-fh.writelines(newline)
-fh.writelines(text_install)
-fh.writelines(newline)
-fh.writelines(text_ip)
-fh.writelines(newline)
-fh.writelines(endtxt)
+log.writelines(newline)
+log.writelines(newline)
+log.writelines(datetime.now().strftime("%a, %d %B %Y %I:%M:%S"))
+log.writelines(newline)
+log.writelines(newline)
+log.writelines(text_install)
+log.writelines(newline)
+log.writelines(text_ip)
+log.writelines(newline)
+log.writelines(endtxt)
 time.sleep(.5)
 print ('Done')
 time.sleep(.5)
-fh.close
+log.close
 #all done
