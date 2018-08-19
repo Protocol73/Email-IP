@@ -1,9 +1,17 @@
+#IP-Email.py
+#Get at https://github.com/Protocol73
+#For use w/ Python 3.7 , StoredData.py & address.py 
+
+#all the imports
 import os
+print("Getting Ready")
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
-cls()    
+cls() #clear the Screen
+
 import time
 import smtplib
+import address as email
 import StoredData as SD
 from email import encoders
 from datetime import datetime
@@ -26,7 +34,7 @@ def validate_ip(s):
             return False #What did you type?
     return True # Looks Good
 
-cls() #clear the Screen
+cls() #again 
 SD.IP
 SD.var1
 SD.var2
@@ -39,15 +47,17 @@ else:
     print("Error:" + SD.IP + " did NOT appear to be a valid IP address.")
     time.sleep(5)
     exit()
-#Email Ready
+
+#Get Email Ready
 SD.msg.attach(MIMEText(SD.body1, 'plain'))
-#connect & login to email
+#Connect & login to email
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
 server.login(SD.fromaddr, SD.password)
 text = SD.msg.as_string()
-server.sendmail(SD.fromaddr,SD.rcpt,text)
+server.sendmail(SD.fromaddr,email.rcpt,text)
 server.quit()
+#Email Done
 
 # Log Data to File
 naive_dt = datetime.now() #set datetime to local timezone
@@ -62,21 +72,21 @@ text_ip = [SD.IP]
 text_install = ["Installed & Emailed out:"]
 endtxt = [" ----- Device Divider ----- "]
 # End Data Storage
+
 # file name & how to open it,will be created on first successful run
-log = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
+fh = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
 # log data to file
-log.writelines(newline)
-log.writelines(newline)
-log.writelines(datetime.now().strftime("%a, %d %B %Y %I:%M:%S"))
-log.writelines(newline)
-log.writelines(newline)
-log.writelines(text_install)
-log.writelines(newline)
-log.writelines(text_ip)
-log.writelines(newline)
-log.writelines(endtxt)
+fh.writelines(newline)
+fh.writelines(newline)
+fh.writelines(datetime.now().strftime("%a, %d %B %Y %I:%M:%S"))
+fh.writelines(newline)
+fh.writelines(newline)
+fh.writelines(text_install)
+fh.writelines(newline)
+fh.writelines(text_ip)
+fh.writelines(newline)
+fh.writelines(endtxt)
 time.sleep(.5)
 print ('Done')
-time.sleep(.5)
-log.close
-#all done
+time.sleep(5)
+fh.close

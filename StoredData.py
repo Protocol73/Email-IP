@@ -1,7 +1,10 @@
-#Stored Data.py For use with IP-Email.py
-#Get at https://github.com/Protocol73/Email-IP
+#Stored Data.py v3.1
+#For use with IP-Email.py (v3.1)
+#Get at https://github.com/Protocol73
+#Setting start at line 30 
 import os
 import time
+import address as email
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
@@ -24,27 +27,28 @@ if __name__ == '__main__':
 # ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
 # DO NOT Change anything above this Line.
 
-#Setting v v v 
-fromaddr = "example@gmail.com" #Your Gmail Address
+fromaddr = "your-email@gmail.com" #Your Gmail Address
 
 # v v v WARNING v v v
-password = "Password" #Gmail Password <--- WARNING THIS IS NOT SECURE! BE CAREFUL ! YOU WERE WARNED !
+password = "password123" #Gmail Password <--- WARNING THIS IS NOT Secure! BE CAREFUL ! YOU WERE WARNED !
 # ^ ^ ^ WARNING ^ ^ ^
 
-to = "example@gmail.com" #Main recipient for this email.
-cc = "example@gmail.com,example@gmail.com" #People to also Recieve the email
+subject = "Test IP-Email Script" #change me
 
-rcpt = cc.split(",") + [to]
+#var1 & 2 are used in the Prompt & the Email 
+var1text = "Info Prompt 1:" #change me
+var2text = "Info Prompt 2:" #change me
+
+beforeIPText = "Installed:" #change me
+afterIPText = "Static Stage/info Complete Text" #change me
 
 msg = MIMEMultipart()
-msg['Subject'] = "CHANGE ME"  # Email Subject
-msg['cc'] = cc
-msg['to'] = to
+msg['subject'] = subject
+msg['cc'] = email.cc
+msg['to'] = email.to
 
-IP = raw_input("IP of Device:")
-var1 = raw_input('Varable Request 1:') #set these to what you want here & down below
-var2 = raw_input('Varable Request 2:') #set here for prompts & below for email text
+IP = raw_input("IP of Device:") #First Prompt
+var1 = raw_input(var1text)
+var2 = raw_input(var2text) 
 
-body1 = ("Installed: " + IP + "\r\nAfter ip Text \r\n" + "\r\nVarable Text 1:" + var1 + "\r\nVarable Text 2:" + var2)
-
-#Writen by Protocol73
+body1 = (beforeIPText + " " + IP + " " + afterIPText + "\r\n \r\n" + var1text + var1 + "\r\n" + var2text + var2 + "\r\n")
