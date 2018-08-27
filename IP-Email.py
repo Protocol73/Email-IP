@@ -4,6 +4,7 @@
 
 #all the imports
 import os
+import sys
 print("Getting Ready")
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -34,11 +35,22 @@ def validate_ip(s):
             return False #What did you type?
     return True # Looks Good
 
+def checkinput():
+    if SD.IP == SD.IP2:
+        return True
+    else:
+        return False
+    pass
 cls() #again 
 SD.IP
-SD.var1
-SD.var2
-cls() #again
+SD.IP2
+
+if checkinput() == True:
+    pass
+else:
+    print("Those IP's Don't Match")
+    time.sleep(4)
+    sys.exit()
 
 if validate_ip(SD.IP) == True:
     print ("Accepted IP: " + SD.IP)
@@ -47,6 +59,9 @@ else:
     print("Error:" + SD.IP + " did NOT appear to be a valid IP address.")
     time.sleep(5)
     exit()
+cls() #again
+SD.var1
+SD.var2
 
 #Get Email Ready
 SD.msg.attach(MIMEText(SD.body1, 'plain'))

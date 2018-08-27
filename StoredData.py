@@ -48,6 +48,7 @@ msg['cc'] = email.cc
 msg['to'] = email.to
 
 IP = raw_input("IP of Device:") #First Prompt
+IP2 = raw_input("Enter IP Again:")#Check Input
 var1 = raw_input(var1text)
 var2 = raw_input(var2text) 
 
