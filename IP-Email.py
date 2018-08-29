@@ -64,9 +64,9 @@ if CheckInput() & Validate_IP(IP) == True:
 else:
     print("Restart?")
     restart = raw_input("y/n:")
-    if restart == 'y' or 'yes':
+    if restart in ['y' or 'yes']:
         os.execl(sys.executable, sys.executable, *sys.argv)
-    elif restart == 'n' or 'no':
+    elif restart in ['n' or 'no']:
         print("Goodbye")
         time.sleep(1)
         sys.exit()
