@@ -1,14 +1,15 @@
 #IP-Email.py
-#Get at https://github.com/Protocol73
+#Get at https://github.com/Protocol73/Email-IP
 #For use w/ Python 3.7 , StoredData.py & address.py 
 
-#all the imports
 import os
 import sys
+
 print("Getting Ready")
-def cls():
+
+def cls(): #clear the Screen
     os.system('cls' if os.name=='nt' else 'clear')
-cls() #clear the Screen
+cls() 
 
 import time
 import smtplib
@@ -20,10 +21,17 @@ from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 
-SD.msg
+def CheckInput(): #To Help w/ Mistyped IP's
+    if IP == IP2:
+        return True
+    else:
+        return False
+        CheckInput = False
+    pass
+cls()
 
 #This Block checks for valid looking IP address.
-def validate_ip(s): 
+def Validate_IP(s): 
     a = s.split('.')
     if len(a) != 4:
         return False
@@ -32,64 +40,75 @@ def validate_ip(s):
             return False
         i = int(x)
         if i < 0 or i > 255:
-            return False #What did you type?
-    return True # Looks Good
+            return False
+    return True
 
-def checkinput():
-    if SD.IP == SD.IP2:
-        return True
-    else:
-        return False
-    pass
-cls() #again 
-SD.IP
-SD.IP2
+IP = raw_input(SD.Prompt1) #First Prompt
+IP2 = raw_input(SD.Prompt2)#Check Input
 
-if checkinput() == True:
+if CheckInput() == True:
     pass
 else:
-    print("Those IP's Don't Match")
-    time.sleep(4)
-    sys.exit()
+    print("Error: Those IP's Don't Match.")
+    time.sleep(2)
 
-if validate_ip(SD.IP) == True:
-    print ("Accepted IP: " + SD.IP)
+if Validate_IP(IP) == True:
     time.sleep(1.5)
 else:
-    print("Error:" + SD.IP + " did NOT appear to be a valid IP address.")
-    time.sleep(5)
-    exit()
-cls() #again
-SD.var1
-SD.var2
+    print("Error:" + IP + " did NOT appear to be a valid IP address.")
+    time.sleep(2) 
+
+if CheckInput() & Validate_IP(IP) == True:
+    cls()
+    print ("Accepted IP: " + IP)
+else:
+    print("Restart?")
+    restart = raw_input("y/n:")
+    if restart == 'y' or 'yes':
+        os.execl(sys.executable, sys.executable, *sys.argv)
+    elif restart == 'n' or 'no':
+        print("Goodbye")
+        time.sleep(1)
+        sys.exit()
+    else:
+        print("Invalid Input,Quiting")
+        time.sleep(1)
+        sys.exit()
+
+var1 = raw_input(SD.var1text)
+var2 = raw_input(SD.var2text) 
+SD.msg
 
 #Get Email Ready
-SD.msg.attach(MIMEText(SD.body1, 'plain'))
+body1 = (SD.beforeIPText + " " + IP + " " + SD.afterIPText + "\r\n \r\n" + SD.var1text + var1 + "\r\n" + SD.var2text + var2 + "\r\n")
+SD.msg.attach(MIMEText(body1, 'plain'))
 #Connect & login to email
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
+print("Logging In..")
 server.login(SD.fromaddr, SD.password)
 text = SD.msg.as_string()
+print("Sending Email...")
 server.sendmail(SD.fromaddr,email.rcpt,text)
 server.quit()
 #Email Done
 
-# Log Data to File
+# Log Notice
 naive_dt = datetime.now() #set datetime to local timezone
 print ("Logging to file at: ")
 print(datetime.now().strftime("%a, %d %B %Y %I:%M"))
-print ("Device: " + SD.IP + " Added to log")
 time.sleep(1)
 
-# String Storage for Log File
+# Storage & info for Log File
 newline = ["\n"]  # b/c formating ;-)
-text_ip = [SD.IP]
 text_install = ["Installed & Emailed out:"]
+text_ip = [IP]
 endtxt = [" ----- Device Divider ----- "]
+# file name & how to open it,will be created on first successful run
+LogFileName = "Install Log.txt" #Change File Name to Whatever you  want.
+fh = open(LogFileName, "a")
 # End Data Storage
 
-# file name & how to open it,will be created on first successful run
-fh = open("Install Log.txt", "a") #Change File Name to Whatever you  want.
 # log data to file
 fh.writelines(newline)
 fh.writelines(newline)
@@ -101,7 +120,8 @@ fh.writelines(newline)
 fh.writelines(text_ip)
 fh.writelines(newline)
 fh.writelines(endtxt)
-time.sleep(.5)
+fh.close
+print ("Device: " + IP + " Added to log & emailed IP" )
 print ('Done')
 time.sleep(5)
-fh.close
+sys.exit()
