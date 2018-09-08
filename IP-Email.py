@@ -1,6 +1,6 @@
-#IP-Email.py
+#IP-Email.py (v3.5)
 #Get at https://github.com/Protocol73/Email-IP
-#For use w/ Python 3.7 , StoredData.py & address.py 
+#For use w/ Python  v2.7 & v3.7, Eip-Settings.cfg & address.cfg
 
 import os
 import sys
@@ -11,15 +11,46 @@ def cls(): #clear the Screen
     os.system('cls' if os.name=='nt' else 'clear')
 cls() 
 
-import time
-import smtplib
-import address as email
-import StoredData as SD
+import time #Used for time.sleep
+import smtplib #For conecting to smtp Server
+
+try: #for py v2 vs v3 input
+    input = raw_input
+except NameError:
+    pass
+
+#for using cfg files
+try:
+    import ConfigParser# Python 2
+except ImportError:
+    from configparser import ConfigParser
+    import configparser as ConfigParser
+try: #for Python smtp usage
+    from email.MIMEText import MIMEText
+    from email.MIMEMultipart import MIMEMultipart
+except ImportError:
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+
 from email import encoders
-from datetime import datetime
-from email.MIMEText import MIMEText
-from email.MIMEBase import MIMEBase
-from email.MIMEMultipart import MIMEMultipart
+from datetime import datetime #for timestamps
+
+#import Settings from Eip-Settings.cfg
+cfg_settings = ConfigParser.RawConfigParser()
+configFilePath = r'Eip-Settings.cfg'
+cfg_settings.read(configFilePath)
+
+subject = cfg_settings.get('Settings', 'subject')
+Prompt1 = cfg_settings.get('Settings', 'Prompt1')
+Prompt2 = cfg_settings.get('Settings', 'Prompt2')
+var1text = cfg_settings.get('Settings', 'var1text')
+var2text = cfg_settings.get('Settings', 'var2text')
+beforeIPText = cfg_settings.get('Settings', 'beforeIPText')
+afterIPText = cfg_settings.get('Settings', 'afterIPText')
+fromaddr = cfg_settings.get('Settings', 'fromaddr')
+password = cfg_settings.get('Settings', 'password')
+
+#define the main checks
 
 def CheckInput(): #To Help w/ Mistyped IP's
     if IP == IP2:
@@ -30,8 +61,7 @@ def CheckInput(): #To Help w/ Mistyped IP's
     pass
 cls()
 
-#This Block checks for valid looking IP address.
-def Validate_IP(s): 
+def Validate_IP(s): #checks for valid looking IP address.
     a = s.split('.')
     if len(a) != 4:
         return False
@@ -43,8 +73,10 @@ def Validate_IP(s):
             return False
     return True
 
-IP = raw_input(SD.Prompt1) #First Prompt
-IP2 = raw_input(SD.Prompt2)#Check Input
+IP = input(Prompt1) #First Prompt
+IP2 = input(Prompt2)#Check Prompt
+
+#Imput Checks Logic
 
 if CheckInput() == True:
     pass
@@ -61,9 +93,9 @@ else:
 if CheckInput() & Validate_IP(IP) == True:
     cls()
     print ("Accepted IP: " + IP)
-else:
+else: # Ask to Restart if there was errors in the input
     print("Restart?")
-    restart = raw_input("y/n:")
+    restart = input("y/n:")
     if restart in ['y' or 'yes']:
         os.execl(sys.executable, sys.executable, *sys.argv)
     elif restart in ['n' or 'no']:
@@ -75,21 +107,38 @@ else:
         time.sleep(1)
         sys.exit()
 
-var1 = raw_input(SD.var1text)
-var2 = raw_input(SD.var2text) 
-SD.msg
+#checks done so..
+#Get the last input fom the user 
 
+var1 = input(var1text)
+var2 = input(var2text) 
+
+#import address.cfg
+cfg_addr = ConfigParser.RawConfigParser()
+configFilePath = r'address.cfg'
+cfg_addr.read(configFilePath)
 #Get Email Ready
-body1 = (SD.beforeIPText + " " + IP + " " + SD.afterIPText + "\r\n \r\n" + SD.var1text + var1 + "\r\n" + SD.var2text + var2 + "\r\n")
-SD.msg.attach(MIMEText(body1, 'plain'))
+to = cfg_addr.get('address', 'to')
+cc = to = cfg_addr.get('address', 'cc')
+rcpt = cc.split(",") + [to]
+msg = MIMEMultipart()
+msg['subject'] = subject
+msg['cc'] = cc
+msg['to'] = to
+
+#Tack it all together & format it.
+body1 = (beforeIPText + " " + IP + " " + afterIPText + "\r\n \r\n" + var1text + var1 + "\r\n" + var2text + var2 + "\r\n")
+
+msg.attach(MIMEText(body1, 'plain'))
+
 #Connect & login to email
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.starttls()
 print("Logging In..")
-server.login(SD.fromaddr, SD.password)
-text = SD.msg.as_string()
+server.login(fromaddr, password)
+text = msg.as_string()
 print("Sending Email...")
-server.sendmail(SD.fromaddr,email.rcpt,text)
+server.sendmail(fromaddr,rcpt,text)
 server.quit()
 #Email Done
 
@@ -100,7 +149,7 @@ print(datetime.now().strftime("%a, %d %B %Y %I:%M"))
 time.sleep(1)
 
 # Storage & info for Log File
-newline = ["\n"]  # b/c formating ;-)
+newline = ["\n"]  #for formating
 text_install = ["Installed & Emailed out:"]
 text_ip = [IP]
 endtxt = [" ----- Device Divider ----- "]
@@ -121,7 +170,7 @@ fh.writelines(text_ip)
 fh.writelines(newline)
 fh.writelines(endtxt)
 fh.close
-print ("Device: " + IP + " Added to log & emailed IP" )
+print ("Device: " + IP + " Added to log & emailed" )
 print ('Done')
 time.sleep(5)
-sys.exit()
+sys.exit(0)
