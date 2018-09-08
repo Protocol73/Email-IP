@@ -35,6 +35,9 @@ password = "password123" #Gmail Password <--- WARNING THIS IS NOT Secure! BE CAR
 
 subject = "Test IP-Email Script" #change me
 
+Prompt1 = ("IP of Device:")
+Prompt2 = ("Enter IP Again:")
+
 #var1 & 2 are used in the Prompt & the Email 
 var1text = "Info Prompt 1:" #change me
 var2text = "Info Prompt 2:" #change me
@@ -46,9 +49,3 @@ msg = MIMEMultipart()
 msg['subject'] = subject
 msg['cc'] = email.cc
 msg['to'] = email.to
-
-IP = raw_input("IP of Device:") #First Prompt
-var1 = raw_input(var1text)
-var2 = raw_input(var2text) 
-
-body1 = (beforeIPText + " " + IP + " " + afterIPText + "\r\n \r\n" + var1text + var1 + "\r\n" + var2text + var2 + "\r\n")
