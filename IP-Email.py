@@ -76,7 +76,7 @@ def Validate_IP(s): #checks for valid looking IP address.
 IP = input(Prompt1) #First Prompt
 IP2 = input(Prompt2)#Check Prompt
 
-#Imput Checks Logic
+#Input Checks Logic
 
 if CheckInput() == True:
     pass
@@ -127,7 +127,10 @@ msg['cc'] = cc
 msg['to'] = to
 
 #Tack it all together & format it.
-body1 = (beforeIPText + " " + IP + " " + afterIPText + "\r\n \r\n" + var1text + var1 + "\r\n" + var2text + var2 + "\r\n")
+body1 = \
+	(beforeIPText + " " + IP + " " + afterIPText + \
+	"\r\n \r\n" + var1text + var1 + \
+	"\r\n" + var2text + var2 + "\r\n")
 
 msg.attach(MIMEText(body1, 'plain'))
 
