@@ -7,9 +7,9 @@ import sys
 
 print("Getting Ready")
 
-def cls(): #clear the Screen
+def clear_term(): #clear the Screen
     os.system('cls' if os.name=='nt' else 'clear')
-cls() 
+clear_term() 
 
 import time #Used for time.sleep
 import smtplib #For conecting to smtp Server
@@ -59,7 +59,7 @@ def CheckInput(): #To Help w/ Mistyped IP's
         return False
         CheckInput = False
     pass
-cls()
+clear_term()
 
 def Validate_IP(s): #checks for valid looking IP address.
     a = s.split('.')
@@ -91,7 +91,7 @@ else:
     time.sleep(2) 
 
 if CheckInput() & Validate_IP(IP) == True:
-    cls()
+    clear_term()
     print ("Accepted IP: " + IP)
 else: # Ask to Restart if there was errors in the input
     print("Restart?")
