@@ -1,15 +1,13 @@
 #IP-Email.py (v3.5)
 #Get at https://github.com/Protocol73/Email-IP
 #For use w/ Python  v2.7 & v3.7, Eip-Settings.cfg & address.cfg
-
 import os
 import sys
+import P73_core #V0.0.1 Get @ https://github.com/Protocol73/
 
 print("Getting Ready")
 
-def clear_term(): #clear the Screen
-    os.system('cls' if os.name=='nt' else 'clear')
-clear_term() 
+P73_core.clear_term() 
 
 import time #Used for time.sleep
 import smtplib #For conecting to smtp Server
@@ -59,7 +57,8 @@ def CheckInput(): #To Help w/ Mistyped IP's
         return False
         CheckInput = False
     pass
-clear_term()
+
+P73_core.clear_term()
 
 def Validate_IP(s): #checks for valid looking IP address.
     a = s.split('.')
@@ -91,21 +90,10 @@ else:
     time.sleep(2) 
 
 if CheckInput() & Validate_IP(IP) == True:
-    clear_term()
+    P73_core.clear_term()
     print ("Accepted IP: " + IP)
 else: # Ask to Restart if there was errors in the input
-    print("Restart?")
-    restart = input("y/n:")
-    if restart in ['y' or 'yes']:
-        os.execl(sys.executable, sys.executable, *sys.argv)
-    elif restart in ['n' or 'no']:
-        print("Goodbye")
-        time.sleep(1)
-        sys.exit()
-    else:
-        print("Invalid Input,Quiting")
-        time.sleep(1)
-        sys.exit()
+    P73_core.end_of_job()
 
 #checks done so..
 #Get the last input fom the user 
